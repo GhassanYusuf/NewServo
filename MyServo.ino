@@ -1,47 +1,45 @@
   #include <Servo.h>
   #include "NewServo.h"
   
-  NewServo test(3);
+  NewServo ExampleServo(3);
   
   void setup() {
-  
+
+    // Serial Communication
     Serial.begin(9600);
-    test.setMin(15);
-    test.setMax(148);
-//    test.setMin(5);
-//    test.setMax(133);
-    test.begin();
+    
+    // By Setting The Bounderies Of Servo Movment, The Servo Will Not Move Out Of This Bounderies
+    ExampleServo.setMin(15);    // The Servo Min Position Is Going To Be 15
+    ExampleServo.setMax(148);   // The Servo Max Position In Goint To Be 148
+    ExampleServo.setInit(90);   // The Servo Initial Position
+    // Therefore the 0% position have value of 15 and 100% have a value of 148
+
+    // Starting The Servo Activity
+    ExampleServo.begin();
+
+    // Go To Initial Position
+    ExampleServo.goInit();
     
   }
   
   void loop() {
 
-//    test.command();
-
-    while(Serial.available()) {
-      dispense(command());
-    }
-  
-  }
-
-  // Asking The Count
-  int command() {
-    if(Serial.available()) {
-      String x = Serial.readStringUntil('\n');
-      while(Serial.available()) {
-        Serial.read();
-      }
-      x.trim();
-      return x.toInt();
-    }
-  }
-
-  // Dispensing Function
-  void dispense(uint8_t times) {
-    for(int i=0; i<times; i++) {
-      test.goMin();
-      delay(500);
-      test.goMax();
-      delay(1000);
-    }
+    ExampleServo.goMin();
+    delay(1000);
+    ExampleServo.goMax();
+    delay(1000);
+    ExampleServo.goInit();
+    delay(1000);
+    ExampleServo.move(40);
+    delay(1000);
+    ExampleServo.percent(80);
+    delay(1000);
+    ExampleServo.move(40);
+    delay(1000);
+    ExampleServo.sweep(32, 65, 10);
+    delay(1000);
+    ExampleServo.sweep(65, 32, 10);
+    delay(1000);
+    ExampleServo.override(255);
+    
   }
