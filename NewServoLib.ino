@@ -41,5 +41,6 @@
     ExampleServo.sweep(65, 32, 10);
     delay(1000);
     ExampleServo.override(255);
+    delay(1000);
     
   }
