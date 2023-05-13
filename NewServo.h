@@ -1,133 +1,75 @@
+#ifndef NewServo_h
+#define NewServo_h
 
-  // Our Dependant Class
-  #include <Servo.h>
+// Our Dependant Library
+#include <Servo.h>
+#include <Arduino.h>
 
-  // Our New Servo Class
-  class NewServo {
+// Our New Servo Class
+class NewServo {
 
-    private:
+  private:
 
-      // Private Variables
-      uint8_t _pin        = 2;      // Pin Number
-      uint8_t _init_pos   = 0;      // Initial Position
-      uint8_t _max_pos    = 255;    // Stop Position
-      uint8_t _min_pos    = 0;      // Start Position
-      uint8_t _prv_pos    = 0;      // History
+    // Private Variables
+    uint8_t _pin        = 2;      // Pin Number
+    uint8_t _init_pos   = 0;      // Initial Position
+    uint8_t _max_pos    = 255;    // Stop Position
+    uint8_t _min_pos    = 0;      // Start Position
+    uint8_t _prv_pos    = 0;      // History
 
-      // Working With It
-      Servo             _servo;                 // Servo Object
+    // Working With It
+    Servo               _servo;   // Servo Object
 
-      // Function To Check Before Writing
-      uint8_t verify(uint8_t input) {
-        if(input != _prv_pos) {
-          _prv_pos = input;
-          return input;
-        }
-      }
+    // Function To Check Before Writing
+    uint8_t verify(uint8_t input);
 
-    public:
+  public:
 
-      // Initialize With No Pin
-      NewServo() {}
+    // Initialize With No Pin
+    NewServo();
 
-      // Initialize With Pin Definition
-      NewServo(uint8_t pin) {
-        _pin = pin;
-      }
+    // Initialize With Pin Definition
+    NewServo(uint8_t pin);
 
-      // Begin Operation
-      void begin() {
-        _servo.attach(_pin);
-      }
+    // Begin Operation
+    void begin();
 
-      // Setting The Pin
-      void setPin(uint8_t pin) {
-        _pin = pin;
-      }
+    // Setting The Pin
+    void setPin(uint8_t pin);
 
-      // Set Min Position Limit
-      void setMin(uint8_t start) {
-        _min_pos = start;
-      }
+    // Set Min Position Limit
+    void setMin(uint8_t start);
 
-      // Set Max Position Limit
-      void setMax(uint8_t stop) {
-        _max_pos = stop;
-      }
+    // Set Max Position Limit
+    void setMax(uint8_t stop);
 
-      // Set Initial Position
-      void setInit(uint8_t init) {
-        _init_pos = init;
-      }
+    // Set Initial Position
+    void setInit(uint8_t init);
 
-      // Go To Start Position
-      void goMax() {
-        _servo.write(_min_pos);
-      }
+    // Go To Start Position
+    void goMax();
 
-      // Go To Stop Position
-      void goMin() {
-        _servo.write(_max_pos);
-      }
+    // Go To Stop Position
+    void goMin();
 
-      // Go To Initial Position
-      void goInit() {
-        _servo.write(_init_pos);
-      }
+    // Go To Initial Position
+    void goInit();
 
-      // Command By Serial
-      void command() {
+    // Command By Serial
+    void command(Stream &serial);
 
-        // Print A Message
-        Serial.print("Please Enter Your Position Value : ");
+    // Move With Specific Position Between Limits
+    void move(uint8_t pos);
 
-        // Wait For User Input
-        while(!Serial.available()) {}
+    // Percentage
+    void percent(uint8_t pos);
 
-        // Read The Value Convert To Number
-        if(Serial.available()) {
-          String x = Serial.readStringUntil('\n');
-          while(Serial.available()) {
-            Serial.read();
-          }
-          Serial.println();
-          x.trim();
-          Serial.println(x);
-          _servo.write(x.toInt());
-        }
-        
-      }
+    // Sweep Function
+    void sweep(uint8_t start, uint8_t stop, unsigned int mDelay);
 
-      // Move With Specific Position Between Limits
-      void move(uint8_t pos) {
-        pos = constrain(pos, _min_pos, _max_pos);
-        _servo.write(pos);
-      }
+    // Over Ride Limits
+    void override(uint8_t pos);
 
-      // Percentage
-      void percent(uint8_t pos) {
-        pos = map(pos, 0, 100, _min_pos, _max_pos);
-        _servo.write(pos);
-      }
+};
 
-      // Sweep Function
-      void sweep(uint8_t start, uint8_t stop, unsigned int mDelay) {
-        if(start < stop) {
-          for(int i=start; i<stop; i++) {
-            move(i);
-            delay(mDelay);
-          }
-        } else if(start > stop) {
-          for(int i=start; i>stop; i--) {
-            move(i);
-            delay(mDelay);
-          }
-        }
-      }
-
-      // Over Ride Limits
-      void override(uint8_t pos) {
-        _servo.write(pos);
-      }
-  
-  };
+#endif

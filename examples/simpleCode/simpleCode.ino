@@ -1,5 +1,4 @@
-  #include <Servo.h>
-  #include "NewServo.h"
+  #include <NewServo.h>
   
   NewServo ExampleServo(3);
   
