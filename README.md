@@ -22,7 +22,7 @@ Installation
 
 To use the NewServo Library, follow these steps:
 
-1. Download the ZIP archive ([insert link to GitHub release page]).
+1. Download the ZIP archive (https://github.com/GhassanYusuf/NewServo/releases).
 2. Open the Arduino IDE and choose Sketch > Include Library > Add .ZIP Library... and select the downloaded file.
 3. Create a new sketch in the Arduino IDE and import the library by adding the following line at the top of your sketch:
 
