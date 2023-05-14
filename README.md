@@ -136,9 +136,6 @@ Sweep function.
 **`override(pos)`**
 Override limits.
 
-**`verify(input)`**
-Verify.
-
 License
 -------
 
